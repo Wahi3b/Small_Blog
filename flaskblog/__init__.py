@@ -16,7 +16,7 @@ db = SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login' #when trying to access a page that requires login in, this will redirect you to the login page
+login_manager.login_view = 'users.login' #when trying to access a page that requires login in, this will redirect you to the login page
 login_manager.login_message_category='info' #makes flash message looks nicer
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -27,7 +27,14 @@ mail = Mail(app)
 
 
 
-from flaskblog import routes
+from flaskblog.users.routes import users
+from flaskblog.posts.routes import posts
+from flaskblog.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
+
 from flaskblog.models import *
 
 @app.shell_context_processor
